@@ -1,472 +1,425 @@
 @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
 
-
 * {
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
-   user-select: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
 }
 
-/* body background colors on toggle */
 :root {
-   --bg: #f6f8fa;
-   --alt-bg: #0f1720;
+    --bg: #f6f8fa;
+    --alt-bg: #0a0e1a;
 }
 
-/* body toggle and a bit smooth color changing transition */
 body {
-   background: var(--bg);
-   transition: background .25s ease;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    font-family: 'Asimovian', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+body.alt {
+    background: var(--alt-bg);
+}
+
+
+.doodles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.doodle {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.2;
+    animation: floatDoodle var(--duration, 20s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes floatDoodle {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate(var(--x-offset, 50px), var(--y-offset, -50px)) rotate(90deg) scale(1.2);
+    }
+    50% {
+        transform: translate(calc(var(--x-offset, 50px) * -0.5), calc(var(--y-offset, -50px) * 0.5)) rotate(180deg) scale(0.9);
+    }
+    75% {
+        transform: translate(var(--x-offset, 50px), var(--y-offset, -50px)) rotate(270deg) scale(1.1);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg) scale(1);
+    }
+}
+
+.doodle:nth-child(1) { top: 5%; left: 5%; --x-offset: 80px; --y-offset: -60px; }
+.doodle:nth-child(2) { top: 15%; right: 8%; --x-offset: -70px; --y-offset: 50px; }
+.doodle:nth-child(3) { bottom: 20%; left: 10%; --x-offset: 60px; --y-offset: -80px; }
+.doodle:nth-child(4) { bottom: 10%; right: 5%; --x-offset: -90px; --y-offset: 40px; }
+.doodle:nth-child(5) { top: 45%; left: 2%; --x-offset: 100px; --y-offset: -30px; }
+.doodle:nth-child(6) { top: 50%; right: 2%; --x-offset: -100px; --y-offset: 30px; }
+.doodle:nth-child(7) { top: 30%; left: 3%; --x-offset: 70px; --y-offset: -70px; }
+.doodle:nth-child(8) { bottom: 40%; right: 3%; --x-offset: -80px; --y-offset: 60px; }
+.doodle:nth-child(9) { top: 8%; left: 50%; --x-offset: -50px; --y-offset: -90px; }
+.doodle:nth-child(10) { bottom: 8%; left: 50%; --x-offset: 50px; --y-offset: 90px; }
+
+body.alt .doodle {
+    opacity: 0.15;
 }
 
 
 .main-container {
-   width: 100%;
-   height: 100vh;
-   padding: 15%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   position: relative;
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    padding: 2rem;
 }
-
-
-/* clock spinning border adjustment */
 .clock-border {
-   position: absolute;
-   width: 32rem;
-   aspect-ratio: 1/1;
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    padding: 1.5rem;
+    background: conic-gradient(from var(--angle, 0deg), 
+        #ff6b9d, #ffb3c6, #ff8aae, #ffd1dc, #ff6b9d, #ffb3c6, #ff8aae);
+    -webkit-mask: radial-gradient(farthest-side, transparent 75%, #000 76%);
+    mask: radial-gradient(farthest-side, transparent 75%, #000 76%);
+    animation: spinGlow 4s linear infinite;
+    filter: drop-shadow(0 0 25px rgba(255, 100, 150, 0.3));
+    z-index: 0;
 }
 
-
-/* at start Clock border spinning animation */
-@keyframes intro-spin {
-   from {
-      --angle: -450deg;
-   }
-   to {
-      --angle: 0deg;
-   }
+.clock-border::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: conic-gradient(from var(--angle, 0deg), 
+        #ff6b9d, #ffb3c6, #ff8aae, #ffd1dc, #ff6b9d);
+    filter: blur(30px);
+    opacity: 0.4;
+    z-index: -1;
+    animation: spinGlow 6s linear infinite;
 }
 
-/* Clock border spinning animation */
-@keyframes spin {
-   to {
-      --angle: 360deg;
-   }
+@keyframes spinGlow {
+    to { --angle: 360deg; }
 }
 
-/* advance way to animate properties */
 @property --angle {
-   syntax: "<angle>";
-   initial-value: 0deg;
-   inherits: false;
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
 }
 
-/* Clock's border and it's shadow */
-.clock-border::after,
-.clock-border::before {
-   content: '';
-   position: absolute;
-   width: 95%;
-   height: 95%;
-   top: 50%;
-   left: 50%;
-   translate: -50% -50%;
-   border-radius: 50%;
-   padding: 1rem;
-   background-image: conic-gradient(from var(--angle), #ff0000, pink, #ff4c4c, #ff1a1a, #ff5c8a, #ff3366, #b22222, #e75480, #cc4444, #d94f4f, #ff0000);
-   animation: intro-spin 1s linear forwards, spin 2s linear 0.4s infinite;
-}
-
-/* clock's shadow scale */
-.clock-border::before {
-   transform: scale(1.02);
-   filter: blur(1.5rem);
-   opacity: 0.9;
-}
 
 .clock-body {
-   width: 30rem;
-   aspect-ratio: 1/1;
-   border-radius: 50%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   position: relative;
-   background-color: #f4d5e7;
-   overflow: hidden;
+    position: relative;
+    width: 88%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 240, 245, 0.8), rgba(255, 220, 235, 0.4));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 
+        inset 0 0 60px rgba(255, 200, 215, 0.2),
+        0 25px 60px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 2;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* the heart it clock */
-.clock-body::after {
-   content: "❤️";
-   position: absolute;
-   top: 40%;
-   font-size: 5.5em;
-   z-index: 4;
+body.alt .clock-body {
+    background: radial-gradient(circle at 30% 30%, rgba(30, 25, 40, 0.85), rgba(15, 12, 25, 0.95));
+    box-shadow: inset 0 0 60px rgba(255, 200, 215, 0.05), 0 25px 60px rgba(0, 0, 0, 0.6);
 }
 
-/* the special editied video */
+
 .hello-kitty-video {
-   width: 100%;
-   height: 100%;
-   position: absolute;
-   transform: scale(0.8) translate(-2%, -10%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 0;
+    transform: scale(0.9);
 }
 
-/* Clock's sec & min hand spinning at refresh */
-@keyframes rotating {
-   from {
-      transform: rotate(-720deg);
-   }
-
-   to {
-      transform: rotate(180deg);
-   }
-}
-
-/* Clock's hour hand spinning at refresh */
-@keyframes hour-rotating {
-   from {
-      transform: rotate(-540deg);
-   }
-
-   to {
-      transform: rotate(30deg);
-   }
-}
-
-/* Clock's hand rotating animation like a real clock (360 hand rotating) after refresh animation */
-@keyframes arrows-hand {
-   to {
-      transform: rotate(540deg);
-   }
+body.alt .hello-kitty-video {
+    opacity: 0.3;
+    filter: brightness(0.6);
 }
 
 
-
-/* min & hour hand shadow */
-.mins-hours-shade {
-   width: 0.4px;
-   height: 50%;
-   border-radius: 0 0 50% 50%;
-   background-color: #000;
+.digital-time {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Asimovian', monospace;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    color: #3d2c3a;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    padding: 0.3rem 1.2rem;
+    border-radius: 50px;
+    z-index: 5;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.4s;
+    white-space: nowrap;
 }
 
-/* hand's styling */
+body.alt .digital-time {
+    color: #e8d5e0;
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255,255,255,0.05);
+}
+
+
+.clock-body::after {
+    content: "🌸";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4.5rem;
+    z-index: 4;
+    filter: drop-shadow(0 4px 20px rgba(255, 100, 150, 0.3));
+    animation: pulseHeart 3s ease-in-out infinite;
+    line-height: 1;
+}
+
+@keyframes pulseHeart {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.08); }
+}
+
+body.alt .clock-body::after {
+    filter: drop-shadow(0 4px 30px rgba(255, 120, 180, 0.15));
+}
+
+/* ===== HAND CONTAINER ===== */
+.hand-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+}
+
+
 .sec, .min, .hour {
-   position: absolute;
-   top: 50%;
-   border-radius: 0 0 50% 50%;
-   transform-origin: 50% 0%;
-   transform: rotate(180deg);
-   display: flex;
-   justify-content: center;
-   background-color: #fff;
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: rotate(0deg);
+    border-radius: 50% 50% 0 0;
 }
 
-/* second hand's styling */
 .sec {
-   width: 4px;
-   height: 40%;
-   z-index: 3;
-   animation: rotating 1s ease-out forwards, arrows-hand 59s steps(60) 0.4s infinite;
-   background-color: #f98de3;
-   border: 1px solid #4f4f4f;
+    width: 3px;
+    height: 38%;
+    background: linear-gradient(to top, #ff3366, #ff8aae);
+    box-shadow: 0 0 15px rgba(255, 50, 100, 0.3);
+    z-index: 6;
+    margin-left: -1.5px;
 }
 
-/* min hand's styling */
 .min {
-   width: 6px;
-   height: 40%;
-   z-index: 2;
-   animation: rotating 1s ease-out forwards, arrows-hand 3540s steps(60) 0.4s infinite;
-   box-shadow: 0 1px 5px black;
+    width: 6px;
+    height: 35%;
+    background: linear-gradient(to top, #4a2e44, #b38b9e);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    z-index: 5;
+    margin-left: -3px;
 }
 
-/* hour hand's styling */
 .hour {
-   width: 8px;
-   height: 30%;
-   z-index: 1;
-   animation: hour-rotating 1s ease-out forwards, arrows-hand 212400s steps(60) 0.4s infinite;
-   box-shadow: 0 1px 5px black;
+    width: 8px;
+    height: 25%;
+    background: linear-gradient(to top, #2d1f2a, #7a5f70);
+    box-shadow: 0 2px 25px rgba(0,0,0,0.2);
+    z-index: 4;
+    margin-left: -4px;
+}
+
+body.alt .sec {
+    background: linear-gradient(to top, #ff4477, #ff99bb);
+    box-shadow: 0 0 20px rgba(255, 50, 100, 0.2);
+}
+body.alt .min { background: linear-gradient(to top, #6b4f62, #b89aac); }
+body.alt .hour { background: linear-gradient(to top, #3d2c3a, #8a6f7e); }
+
+
+.number {
+    position: absolute;
+    font-family: 'Asimovian', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #3d2c3a;
+    text-shadow: 0 2px 15px rgba(255, 200, 220, 0.4);
+    transition: color 0.4s;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+}
+
+body.alt .number {
+    color: #e5d6df;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
 
 
+.number-12 { top: 8%; left: 50%; }
+.number-1 { top: 15.5%; left: 73%; }
+.number-2 { top: 30%; left: 88%; }
+.number-3 { top: 50%; left: 93%; }
+.number-4 { top: 70%; left: 88%; }
+.number-5 { top: 84.5%; left: 73%; }
+.number-6 { top: 92%; left: 50%; }
+.number-7 { top: 84.5%; left: 27%; }
+.number-8 { top: 70%; left: 12%; }
+.number-9 { top: 50%; left: 7%; }
+.number-10 { top: 30%; left: 12%; }
+.number-11 { top: 15.5%; left: 27%; }
 
 
-
-/* Clock's numbers sytling */
-.mins-numbs {
-   width: 90%;
-   position: absolute;
-   display: flex;
-   justify-content: space-between;
-   font-family: "Asimovian", sans-serif;
-   font-size: 2em;
-}
-
-/* Animations of numbers rotating basically numbers rounding in clock and going to there positions */
-/* Starts from here */
-@keyframes num-rounding4 {
-   0% {
-      transform: rotatex(90deg);
-   }
-
-   20% {
-      transform: rotateX(0deg) rotate(-90deg);
-   }
-
-   100% {
-      transform: rotate(90deg);
-   }
-}
-
-@keyframes num-rounding5 {
-   0% {
-      transform: rotatex(90deg);
-   }
-
-   20% {
-      transform: rotateX(0deg) rotate(-90deg);
-   }
-
-   100% {
-      transform: rotate(120deg);
-   }
-}
-
-@keyframes num-rounding6 {
-   0% {
-      transform: rotatex(90deg);
-   }
-
-   20% {
-      transform: rotateX(0deg) rotate(-90deg);
-   }
-
-   100% {
-      transform: rotate(150deg);
-   }
-}
-
-@keyframes num-rounding7 {
-   0% {
-      transform: rotatex(90deg);
-   }
-
-   20% {
-      transform: rotateX(0deg) rotate(-90deg);
-   }
-
-   100% {
-      transform: rotate(180deg);
-   }
-}
-
-@keyframes num-rounding8 {
-   0% {
-      transform: rotatex(90deg);
-   }
-
-   20% {
-      transform: rotateX(0deg) rotate(-90deg);
-   }
-
-   100% {
-      transform: rotate(210deg);
-   }
-}
-
-@keyframes num-rounding9 {
-   0% {
-      transform: rotatex(90deg);
-   }
-
-   20% {
-      transform: rotateX(0deg) rotate(-90deg);
-   }
-
-   100% {
-      transform: rotate(240deg);
-   }
-}
-
-/* numbers rotating basically numbers rounding in clock and going to there positions */
-.clock-body div:nth-of-type(4) {
-   animation: num-rounding4 1s forwards;
-}
-
-.clock-body div:nth-of-type(5) {
-   animation: num-rounding5 1s forwards;
-}
-
-.clock-body div:nth-of-type(6) {
-   animation: num-rounding6 1s forwards;
-}
-
-.clock-body div:nth-of-type(7) {
-   animation: num-rounding7 1s forwards;
-}
-
-.clock-body div:nth-of-type(8) {
-   animation: num-rounding8 1s forwards;
-}
-
-.clock-body div:nth-of-type(9) {
-   animation: num-rounding9 1s forwards;
-}
-/* Ends here */
-
-
-
-/* strating numbers */
-.clock-body .mins-numbs:nth-of-type(4) p {
-   transform: rotate(270deg);
-}
-
-.clock-body .mins-numbs:nth-of-type(5) p {
-   transform: rotate(240deg);
-}
-
-.clock-body .mins-numbs:nth-of-type(6) p {
-   transform: rotate(210deg);
-}
-
-.clock-body .mins-numbs:nth-of-type(7) p {
-   transform: rotate(180deg);
-}
-
-.clock-body .mins-numbs:nth-of-type(8) p {
-   transform: rotate(150deg);
-}
-
-.clock-body .mins-numbs:nth-of-type(9) p {
-   transform: rotate(120deg);
-}
-
-
-
-
-
-
-
-/* Body Background changing toggle div */
 #trigger {
-   width: 100%;
-   height: 100%;
-   position: absolute;
-   top: 0;
-   z-index: 7;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
 }
 
-/* WHEN body has the "alt" class, change body bg CSS */
-body.alt {
-   background: var(--alt-bg);
+#trigger:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+#trigger:active {
+    transform: scale(0.9);
+}
+
+.toggle-icon {
+    font-size: 1.8rem;
+    transition: transform 0.4s;
+}
+
+body.alt #trigger {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+body.alt #trigger:hover {
+    background: rgba(0, 0, 0, 0.4);
 }
 
 
+.timezone-display {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    font-family: 'Asimovian', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.1);
+    z-index: 100;
+    transition: all 0.4s;
+    letter-spacing: 1px;
+}
 
+body.alt .timezone-display {
+    color: rgba(255,255,255,0.25);
+    background: rgba(0,0,0,0.2);
+    border-color: rgba(255,255,255,0.05);
+}
 
-
-
-
-
-
-
-
-/* Yes that was the mess */
-/* media queries for different screen sizes
-Adjusting clock's red spinning border & heart */
-
+/* ===== RESPONSIVE ===== */
 @media (max-width: 640px) {
-   .clock-border {
-      width: 29rem;
-   }
-
-   .clock-body::after {
-      font-size: 4.8em;
-   }
-}
-
-@media (max-width: 580px) {
-   .clock-border {
-      width: 27rem;
-   }
-}
-
-
-@media (max-width: 520px) {
-   .clock-border {
-      width: 24rem;
-   }
-
-   .clock-body::after {
-      font-size: 4em;
-   }
-
-   .mins-numbs {
-      font-size: large;
-   }
-}
-
-@media (max-width: 490px) {
-   .clock-border {
-      width: 22rem;
-   }
+    .clock-body::after { font-size: 3.8rem; }
+    .digital-time { font-size: 1.2rem; bottom: 12%; padding: 0.2rem 1rem; }
+    .number { font-size: 1.6rem; }
+    #trigger { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+    .toggle-icon { font-size: 1.4rem; }
+    .timezone-display { font-size: 0.7rem; bottom: 20px; left: 20px; padding: 0.3rem 0.8rem; }
+    .doodle { font-size: 1.5rem; }
 }
 
 @media (max-width: 460px) {
-   .clock-border {
-      width: 20rem;
-   }
-
-   .clock-body::after {
-      font-size: 3.5em;
-   }
+    .clock-body::after { font-size: 3rem; }
+    .digital-time { font-size: 1rem; bottom: 10%; }
+    .number { font-size: 1.2rem; }
+    .sec { width: 2px; margin-left: -1px; height: 36%; }
+    .min { width: 4px; margin-left: -2px; height: 33%; }
+    .hour { width: 6px; margin-left: -3px; height: 23%; }
+    #trigger { width: 45px; height: 45px; bottom: 15px; right: 15px; }
+    .toggle-icon { font-size: 1.2rem; }
+    .timezone-display { font-size: 0.6rem; bottom: 15px; left: 15px; }
+    .doodle { font-size: 1.2rem; }
+    
+    
+    .number-12 { top: 6%; }
+    .number-1 { top: 14%; left: 74%; }
+    .number-2 { top: 28%; left: 90%; }
+    .number-3 { top: 50%; left: 95%; }
+    .number-4 { top: 72%; left: 90%; }
+    .number-5 { top: 86%; left: 74%; }
+    .number-6 { top: 94%; }
+    .number-7 { top: 86%; left: 26%; }
+    .number-8 { top: 72%; left: 10%; }
+    .number-9 { top: 50%; left: 5%; }
+    .number-10 { top: 28%; left: 10%; }
+    .number-11 { top: 14%; left: 26%; }
 }
 
-
-@media (max-width: 410px) {
-   .clock-border {
-      width: 18rem;
-   }
-
-   .clock-body::after {
-      font-size: 3em;
-   }
-}
-
-
-@media (max-width: 355px) {
-   .clock-border {
-      width: 16rem;
-   }
-
-   .clock-body::after {
-      font-size: 2.7em;
-   }
-}
-
-
-
-@media (max-width: 315px) {
-   .clock-border {
-      width: 13rem;
-   }
-
-   .clock-body::after {
-      font-size: 2.3em;
-   }
-}
-
-
-
-@media (max-width: 280px) {
-   .clock-body::after {
-      font-size: 1.9em;
-   }
+@media (max-width: 360px) {
+    .clock-body::after { font-size: 2.5rem; }
+    .digital-time { font-size: 0.8rem; bottom: 8%; padding: 0.1rem 0.8rem; }
+    .number { font-size: 1rem; }
 }
