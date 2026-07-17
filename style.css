@@ -1,0 +1,472 @@
+@import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
+
+
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   user-select: none;
+}
+
+/* body background colors on toggle */
+:root {
+   --bg: #f6f8fa;
+   --alt-bg: #0f1720;
+}
+
+/* body toggle and a bit smooth color changing transition */
+body {
+   background: var(--bg);
+   transition: background .25s ease;
+}
+
+
+.main-container {
+   width: 100%;
+   height: 100vh;
+   padding: 15%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: relative;
+}
+
+
+/* clock spinning border adjustment */
+.clock-border {
+   position: absolute;
+   width: 32rem;
+   aspect-ratio: 1/1;
+}
+
+
+/* at start Clock border spinning animation */
+@keyframes intro-spin {
+   from {
+      --angle: -450deg;
+   }
+   to {
+      --angle: 0deg;
+   }
+}
+
+/* Clock border spinning animation */
+@keyframes spin {
+   to {
+      --angle: 360deg;
+   }
+}
+
+/* advance way to animate properties */
+@property --angle {
+   syntax: "<angle>";
+   initial-value: 0deg;
+   inherits: false;
+}
+
+/* Clock's border and it's shadow */
+.clock-border::after,
+.clock-border::before {
+   content: '';
+   position: absolute;
+   width: 95%;
+   height: 95%;
+   top: 50%;
+   left: 50%;
+   translate: -50% -50%;
+   border-radius: 50%;
+   padding: 1rem;
+   background-image: conic-gradient(from var(--angle), #ff0000, pink, #ff4c4c, #ff1a1a, #ff5c8a, #ff3366, #b22222, #e75480, #cc4444, #d94f4f, #ff0000);
+   animation: intro-spin 1s linear forwards, spin 2s linear 0.4s infinite;
+}
+
+/* clock's shadow scale */
+.clock-border::before {
+   transform: scale(1.02);
+   filter: blur(1.5rem);
+   opacity: 0.9;
+}
+
+.clock-body {
+   width: 30rem;
+   aspect-ratio: 1/1;
+   border-radius: 50%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: relative;
+   background-color: #f4d5e7;
+   overflow: hidden;
+}
+
+/* the heart it clock */
+.clock-body::after {
+   content: "❤️";
+   position: absolute;
+   top: 40%;
+   font-size: 5.5em;
+   z-index: 4;
+}
+
+/* the special editied video */
+.hello-kitty-video {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   transform: scale(0.8) translate(-2%, -10%);
+}
+
+/* Clock's sec & min hand spinning at refresh */
+@keyframes rotating {
+   from {
+      transform: rotate(-720deg);
+   }
+
+   to {
+      transform: rotate(180deg);
+   }
+}
+
+/* Clock's hour hand spinning at refresh */
+@keyframes hour-rotating {
+   from {
+      transform: rotate(-540deg);
+   }
+
+   to {
+      transform: rotate(30deg);
+   }
+}
+
+/* Clock's hand rotating animation like a real clock (360 hand rotating) after refresh animation */
+@keyframes arrows-hand {
+   to {
+      transform: rotate(540deg);
+   }
+}
+
+
+
+/* min & hour hand shadow */
+.mins-hours-shade {
+   width: 0.4px;
+   height: 50%;
+   border-radius: 0 0 50% 50%;
+   background-color: #000;
+}
+
+/* hand's styling */
+.sec, .min, .hour {
+   position: absolute;
+   top: 50%;
+   border-radius: 0 0 50% 50%;
+   transform-origin: 50% 0%;
+   transform: rotate(180deg);
+   display: flex;
+   justify-content: center;
+   background-color: #fff;
+}
+
+/* second hand's styling */
+.sec {
+   width: 4px;
+   height: 40%;
+   z-index: 3;
+   animation: rotating 1s ease-out forwards, arrows-hand 59s steps(60) 0.4s infinite;
+   background-color: #f98de3;
+   border: 1px solid #4f4f4f;
+}
+
+/* min hand's styling */
+.min {
+   width: 6px;
+   height: 40%;
+   z-index: 2;
+   animation: rotating 1s ease-out forwards, arrows-hand 3540s steps(60) 0.4s infinite;
+   box-shadow: 0 1px 5px black;
+}
+
+/* hour hand's styling */
+.hour {
+   width: 8px;
+   height: 30%;
+   z-index: 1;
+   animation: hour-rotating 1s ease-out forwards, arrows-hand 212400s steps(60) 0.4s infinite;
+   box-shadow: 0 1px 5px black;
+}
+
+
+
+
+
+/* Clock's numbers sytling */
+.mins-numbs {
+   width: 90%;
+   position: absolute;
+   display: flex;
+   justify-content: space-between;
+   font-family: "Asimovian", sans-serif;
+   font-size: 2em;
+}
+
+/* Animations of numbers rotating basically numbers rounding in clock and going to there positions */
+/* Starts from here */
+@keyframes num-rounding4 {
+   0% {
+      transform: rotatex(90deg);
+   }
+
+   20% {
+      transform: rotateX(0deg) rotate(-90deg);
+   }
+
+   100% {
+      transform: rotate(90deg);
+   }
+}
+
+@keyframes num-rounding5 {
+   0% {
+      transform: rotatex(90deg);
+   }
+
+   20% {
+      transform: rotateX(0deg) rotate(-90deg);
+   }
+
+   100% {
+      transform: rotate(120deg);
+   }
+}
+
+@keyframes num-rounding6 {
+   0% {
+      transform: rotatex(90deg);
+   }
+
+   20% {
+      transform: rotateX(0deg) rotate(-90deg);
+   }
+
+   100% {
+      transform: rotate(150deg);
+   }
+}
+
+@keyframes num-rounding7 {
+   0% {
+      transform: rotatex(90deg);
+   }
+
+   20% {
+      transform: rotateX(0deg) rotate(-90deg);
+   }
+
+   100% {
+      transform: rotate(180deg);
+   }
+}
+
+@keyframes num-rounding8 {
+   0% {
+      transform: rotatex(90deg);
+   }
+
+   20% {
+      transform: rotateX(0deg) rotate(-90deg);
+   }
+
+   100% {
+      transform: rotate(210deg);
+   }
+}
+
+@keyframes num-rounding9 {
+   0% {
+      transform: rotatex(90deg);
+   }
+
+   20% {
+      transform: rotateX(0deg) rotate(-90deg);
+   }
+
+   100% {
+      transform: rotate(240deg);
+   }
+}
+
+/* numbers rotating basically numbers rounding in clock and going to there positions */
+.clock-body div:nth-of-type(4) {
+   animation: num-rounding4 1s forwards;
+}
+
+.clock-body div:nth-of-type(5) {
+   animation: num-rounding5 1s forwards;
+}
+
+.clock-body div:nth-of-type(6) {
+   animation: num-rounding6 1s forwards;
+}
+
+.clock-body div:nth-of-type(7) {
+   animation: num-rounding7 1s forwards;
+}
+
+.clock-body div:nth-of-type(8) {
+   animation: num-rounding8 1s forwards;
+}
+
+.clock-body div:nth-of-type(9) {
+   animation: num-rounding9 1s forwards;
+}
+/* Ends here */
+
+
+
+/* strating numbers */
+.clock-body .mins-numbs:nth-of-type(4) p {
+   transform: rotate(270deg);
+}
+
+.clock-body .mins-numbs:nth-of-type(5) p {
+   transform: rotate(240deg);
+}
+
+.clock-body .mins-numbs:nth-of-type(6) p {
+   transform: rotate(210deg);
+}
+
+.clock-body .mins-numbs:nth-of-type(7) p {
+   transform: rotate(180deg);
+}
+
+.clock-body .mins-numbs:nth-of-type(8) p {
+   transform: rotate(150deg);
+}
+
+.clock-body .mins-numbs:nth-of-type(9) p {
+   transform: rotate(120deg);
+}
+
+
+
+
+
+
+
+/* Body Background changing toggle div */
+#trigger {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   top: 0;
+   z-index: 7;
+}
+
+/* WHEN body has the "alt" class, change body bg CSS */
+body.alt {
+   background: var(--alt-bg);
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Yes that was the mess */
+/* media queries for different screen sizes
+Adjusting clock's red spinning border & heart */
+
+@media (max-width: 640px) {
+   .clock-border {
+      width: 29rem;
+   }
+
+   .clock-body::after {
+      font-size: 4.8em;
+   }
+}
+
+@media (max-width: 580px) {
+   .clock-border {
+      width: 27rem;
+   }
+}
+
+
+@media (max-width: 520px) {
+   .clock-border {
+      width: 24rem;
+   }
+
+   .clock-body::after {
+      font-size: 4em;
+   }
+
+   .mins-numbs {
+      font-size: large;
+   }
+}
+
+@media (max-width: 490px) {
+   .clock-border {
+      width: 22rem;
+   }
+}
+
+@media (max-width: 460px) {
+   .clock-border {
+      width: 20rem;
+   }
+
+   .clock-body::after {
+      font-size: 3.5em;
+   }
+}
+
+
+@media (max-width: 410px) {
+   .clock-border {
+      width: 18rem;
+   }
+
+   .clock-body::after {
+      font-size: 3em;
+   }
+}
+
+
+@media (max-width: 355px) {
+   .clock-border {
+      width: 16rem;
+   }
+
+   .clock-body::after {
+      font-size: 2.7em;
+   }
+}
+
+
+
+@media (max-width: 315px) {
+   .clock-border {
+      width: 13rem;
+   }
+
+   .clock-body::after {
+      font-size: 2.3em;
+   }
+}
+
+
+
+@media (max-width: 280px) {
+   .clock-body::after {
+      font-size: 1.9em;
+   }
+}

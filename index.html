@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Kitty</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="main-container" id="button">
+        <div class="clock-border"></div>
+
+        <div class="clock-body">
+
+
+
+            <video class="hello-kitty-video" src="assets/hello-kitty.av1.mp4" autoplay muted loop></video>
+
+
+
+            <!-- Clock's Hands Starts from here -->
+            <div class="sec"></div>
+            <div class="min">
+                <div class="mins-hours-shade"></div>
+            </div>
+            <div class="hour">
+                <div class="mins-hours-shade"></div>
+            </div>
+            <!-- Clock's Hands Ends here -->
+
+
+            <!-- Mins Numbers Starts from here -->
+            <div class="mins-numbs">
+                <p>12</p>
+                <p>6</p>
+            </div>
+            <div class="mins-numbs">
+                <p>1</p>
+                <p>7</p>
+            </div>
+            <div class="mins-numbs">
+                <p>2</p>
+                <p>8</p>
+            </div>
+            <div class="mins-numbs">
+                <p>3</p>
+                <p>9</p>
+            </div>
+            <div class="mins-numbs">
+                <p>4</p>
+                <p>10</p>
+            </div>
+            <div class="mins-numbs">
+                <p>5</p>
+                <p>11</p>
+            </div>
+            <!-- Mins Numbers Ends here -->
+        </div>
+    </div>
+
+
+
+    <!-- Bright & Dark doggle button -->
+    <div id="trigger" role="button" tabindex="0" aria-pressed="false" title="Click to toggle"></div>
+
+
+</body>
+
+<script src="./app.js"></script>
+
+</html>
