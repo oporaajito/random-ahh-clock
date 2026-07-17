@@ -9,65 +9,63 @@
 </head>
 
 <body>
-    <div class="main-container" id="button">
+    
+    <div class="doodles">
+        <span class="doodle">🌸</span>
+        <span class="doodle">✨</span>
+        <span class="doodle">🎀</span>
+        <span class="doodle">💕</span>
+        <span class="doodle">🌈</span>
+        <span class="doodle">⭐</span>
+        <span class="doodle">🦋</span>
+        <span class="doodle">🌺</span>
+        <span class="doodle">💖</span>
+        <span class="doodle">🎵</span>
+    </div>
+
+    <div class="main-container">
+       
         <div class="clock-border"></div>
 
         <div class="clock-body">
-
-
-
+          
             <video class="hello-kitty-video" src="assets/hello-kitty.av1.mp4" autoplay muted loop></video>
 
+            
+            <div class="digital-time" id="digitalTime">00:00:00</div>
 
+         
+            <div class="hand-container">
+                <div class="sec" id="secHand"></div>
+                <div class="min" id="minHand"></div>
+                <div class="hour" id="hourHand"></div>
+            </div>
 
-            <!-- Clock's Hands Starts from here -->
-            <div class="sec"></div>
-            <div class="min">
-                <div class="mins-hours-shade"></div>
-            </div>
-            <div class="hour">
-                <div class="mins-hours-shade"></div>
-            </div>
-            <!-- Clock's Hands Ends here -->
-
-
-            <!-- Mins Numbers Starts from here -->
-            <div class="mins-numbs">
-                <p>12</p>
-                <p>6</p>
-            </div>
-            <div class="mins-numbs">
-                <p>1</p>
-                <p>7</p>
-            </div>
-            <div class="mins-numbs">
-                <p>2</p>
-                <p>8</p>
-            </div>
-            <div class="mins-numbs">
-                <p>3</p>
-                <p>9</p>
-            </div>
-            <div class="mins-numbs">
-                <p>4</p>
-                <p>10</p>
-            </div>
-            <div class="mins-numbs">
-                <p>5</p>
-                <p>11</p>
-            </div>
-            <!-- Mins Numbers Ends here -->
+            
+            <div class="number number-12">12</div>
+            <div class="number number-1">1</div>
+            <div class="number number-2">2</div>
+            <div class="number number-3">3</div>
+            <div class="number number-4">4</div>
+            <div class="number number-5">5</div>
+            <div class="number number-6">6</div>
+            <div class="number number-7">7</div>
+            <div class="number number-8">8</div>
+            <div class="number number-9">9</div>
+            <div class="number number-10">10</div>
+            <div class="number number-11">11</div>
         </div>
     </div>
 
+    
+    <div id="trigger" role="button" tabindex="0" aria-pressed="false" title="Toggle dark/light mode">
+        <span class="toggle-icon">🌙</span>
+    </div>
 
+    
+    <div class="timezone-display" id="timezoneDisplay">🌍 Your Time</div>
 
-    <!-- Bright & Dark doggle button -->
-    <div id="trigger" role="button" tabindex="0" aria-pressed="false" title="Click to toggle"></div>
-
-
+    <script src="./app.js"></script>
 </body>
-
-<script src="./app.js"></script>
 
 </html>
